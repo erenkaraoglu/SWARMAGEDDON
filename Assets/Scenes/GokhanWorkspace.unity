@@ -1210,12 +1210,40 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 130635841806160687, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: Drag
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 130635841806160687, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: JumpUpSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 130635841806160687, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: MaxAirMoveSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 130635841806160687, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
       propertyPath: OrientationMethod
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 130635841806160687, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
       propertyPath: MaxStableMoveSpeed
-      value: 6
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 130635841806160687, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: AirAccelerationSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 130635841806160687, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: CrouchedCapsuleHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 130635841806160687, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: JumpPreGroundingGraceTime
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 130635841806160687, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: JumpPostGroundingGraceTime
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 876988017524165559, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
       propertyPath: m_Name
@@ -1260,6 +1288,34 @@ PrefabInstance:
     - target: {fileID: 3762612087605542251, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8817108124326383631, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: CapsuleHeight
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8817108124326383631, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: CapsuleRadius
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8817108124326383631, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: MinRequiredStepDepth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8817108124326383631, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: MaxStableDistanceFromLedge
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8995064194260180964, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: m_Height
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8995064194260180964, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: m_Radius
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8995064194260180964, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
+      propertyPath: m_Center.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
