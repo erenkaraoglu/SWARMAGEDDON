@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 472f12c28b557f048abcd25ea7430c38, type: 3}
+  m_Name: DoorBasic
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: 16c039f8195cedc41a6b97d470683ac3, type: 3}
+  - {fileID: 8300000, guid: ebc208a3f2341a84fb856c5f947d634b, type: 3}
+  randomizePitch: 1
+  minPitch: 0.8
+  maxPitch: 1.2
+  volume: 1

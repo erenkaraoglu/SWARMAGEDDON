@@ -9,6 +9,10 @@ namespace Interaction
         [SerializeField] private bool logInteractor = true;
         [SerializeField] private int interactionCount = 0;
         
+        [Header("Test Audio")]
+        [SerializeField] private string alternativeSoundId = "";
+        [SerializeField] private bool useAlternativeSound = false;
+        
         public override void Interact(GameObject interactor)
         {
             interactionCount++;
@@ -21,7 +25,26 @@ namespace Interaction
             }
             
             Debug.Log(message);
-            PlayInteractionSound();
+            
+            // Play sound based on settings
+            if (useAlternativeSound && !string.IsNullOrEmpty(alternativeSoundId))
+            {
+                PlayAlternativeSound();
+            }
+            else
+            {
+                PlayInteractionSound();
+            }
+        }
+        
+        private void PlayAlternativeSound()
+        {
+            if (SoundManager.Instance != null)
+            {
+                Vector3? position = playSound3D ? transform.position : null;
+                // Use index 0 for alternative sound or random if no index specified
+                SoundManager.Instance.PlaySound(alternativeSoundId, position, 0);
+            }
         }
         
         public override void OnInteractionEnter(GameObject interactor)

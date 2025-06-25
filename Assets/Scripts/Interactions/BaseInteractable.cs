@@ -4,32 +4,29 @@ namespace Interaction
 {
     public abstract class BaseInteractable : MonoBehaviour, IInteractable
     {
-        [Header("Base Interaction Settings")]
+        [Header("Interaction Settings")]
         [SerializeField] protected string interactionText = "Interact";
         [SerializeField] protected bool canInteract = true;
         [SerializeField] protected bool highlightOnHover = true;
-        [SerializeField] protected AudioClip interactionSound;
-        
-        [Header("Highlight Settings")]
         [SerializeField] protected Color highlightColor = Color.yellow;
         
-        protected AudioSource audioSource;
+        [Header("Audio Settings")]
+        [SerializeField] protected string interactionSoundId = "";
+        [SerializeField] protected bool playSound3D = true;
+        
         protected InteractionHighlighter highlighter;
         
         public virtual string InteractionText => interactionText;
         public virtual bool CanInteract => canInteract;
         public Transform Transform => transform;
-        
+
         protected virtual void Awake()
         {
-            audioSource = GetComponent<AudioSource>();
-            if (audioSource == null && interactionSound != null)
-            {
-                audioSource = gameObject.AddComponent<AudioSource>();
-                audioSource.playOnAwake = false;
-            }
-            
             SetupHighlighter();
+            if(gameObject.layer != LayerMask.NameToLayer("Interactable"))
+            {
+                gameObject.layer = LayerMask.NameToLayer("Interactable");
+            }
         }
         
         protected virtual void SetupHighlighter()
@@ -67,11 +64,18 @@ namespace Interaction
             highlighter.SetHighlight(highlight);
         }
         
-        protected virtual void PlayInteractionSound()
+        protected virtual void PlayInteractionSound(int? clipIndex = null)
         {
-            if (audioSource != null && interactionSound != null)
+            if (string.IsNullOrEmpty(interactionSoundId)) return;
+            
+            if (SoundManager.Instance != null)
             {
-                audioSource.PlayOneShot(interactionSound);
+                Vector3? position = playSound3D ? transform.position : null;
+                SoundManager.Instance.PlaySound(interactionSoundId, position, clipIndex);
+            }
+            else
+            {
+                Debug.LogWarning("SoundManager instance not found. Make sure SoundManager is present in the scene.");
             }
         }
     }
