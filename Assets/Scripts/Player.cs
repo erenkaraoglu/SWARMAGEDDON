@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 using KinematicCharacterController;
 using KinematicCharacterController.Examples;
 using Unity.Cinemachine;
+using Interaction;
+using UI;
 
 public class Player : MonoBehaviour
 {
@@ -20,6 +22,10 @@ public class Player : MonoBehaviour
     [Range(0.1f, 100.0f)]
     public float lookSensitivity = 1.0f;
     
+    [Header("Interaction")]
+    [SerializeField] private InteractionDetector interactionDetector;
+    [SerializeField] private InteractionUI interactionUI;
+    
     // Input Action references
     private InputAction moveAction;
     private InputAction lookAction;
@@ -27,6 +33,7 @@ public class Player : MonoBehaviour
     private InputAction crouchAction;
     private InputAction attackAction;
     private InputAction scrollAction;
+    private InputAction interactAction;
 
     // Camera control
     private CinemachineOrbitalFollow orbitalFollow;
@@ -42,6 +49,7 @@ public class Player : MonoBehaviour
         jumpAction = playerActionMap.FindAction("Jump");
         crouchAction = playerActionMap.FindAction("Crouch");
         attackAction = playerActionMap.FindAction("Attack");
+        interactAction = playerActionMap.FindAction("Interact");
         
         // Get scroll from UI action map
         var uiActionMap = inputActions.FindActionMap("UI");
@@ -53,6 +61,16 @@ public class Player : MonoBehaviour
             orbitalFollow = VirtualCamera.GetComponent<CinemachineOrbitalFollow>();
             thirdPersonFollow = VirtualCamera.GetComponent<CinemachineThirdPersonFollow>();
             cinemachineFollow = VirtualCamera.GetComponent<CinemachineFollow>();
+        }
+        
+        // Setup interaction detector if not assigned
+        if (interactionDetector == null)
+        {
+            interactionDetector = GetComponent<InteractionDetector>();
+            if (interactionDetector == null)
+            {
+                interactionDetector = gameObject.AddComponent<InteractionDetector>();
+            }
         }
     }
 
@@ -86,6 +104,13 @@ public class Player : MonoBehaviour
         // Subscribe to input events
         attackAction.performed += OnCursorToggle;
         scrollAction.performed += OnZoom;
+        interactAction.performed += OnInteract;
+        
+        // Subscribe to interaction events
+        if (interactionDetector != null)
+        {
+            interactionDetector.OnInteractableChanged += OnInteractableChanged;
+        }
     }
 
     private void OnDestroy()
@@ -99,12 +124,21 @@ public class Player : MonoBehaviour
         {
             scrollAction.performed -= OnZoom;
         }
+        if (interactAction != null)
+        {
+            interactAction.performed -= OnInteract;
+        }
+        
+        // Unsubscribe from interaction events
+        if (interactionDetector != null)
+        {
+            interactionDetector.OnInteractableChanged -= OnInteractableChanged;
+        }
     }
 
     private void Update()
     {
         HandleCharacterInput();
-
     }
 
     private void LateUpdate()
@@ -171,6 +205,29 @@ public class Player : MonoBehaviour
             Vector3 offset = cinemachineFollow.FollowOffset;
             offset.z = Mathf.Clamp(offset.z - scrollValue * 0.05f, 0.05f, 0.3f);
             cinemachineFollow.FollowOffset = offset;
+        }
+    }
+
+    private void OnInteract(InputAction.CallbackContext context)
+    {
+        if (interactionDetector != null)
+        {
+            interactionDetector.TryInteract();
+        }
+    }
+    
+    private void OnInteractableChanged(IInteractable interactable)
+    {
+        if (interactionUI != null)
+        {
+            if (interactable != null)
+            {
+                interactionUI.ShowInteraction(interactable);
+            }
+            else
+            {
+                interactionUI.HideInteraction();
+            }
         }
     }
 
