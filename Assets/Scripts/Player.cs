@@ -26,6 +26,11 @@ public class Player : MonoBehaviour
     [SerializeField] private InteractionDetector interactionDetector;
     [SerializeField] private InteractionUI interactionUI;
     
+    [Header("Camera FOV Settings")]
+    public float DefaultFOV = 60f;
+    public float SprintFOV = 70f;
+    public float FOVChangeSpeed = 5f;
+    
     // Input Action references
     private InputAction moveAction;
     private InputAction lookAction;
@@ -34,7 +39,8 @@ public class Player : MonoBehaviour
     private InputAction attackAction;
     private InputAction scrollAction;
     private InputAction interactAction;
-
+    private InputAction sprintAction; // New sprint action
+    
     // Camera control
     private CinemachineOrbitalFollow orbitalFollow;
     private CinemachineThirdPersonFollow thirdPersonFollow;
@@ -50,6 +56,7 @@ public class Player : MonoBehaviour
         crouchAction = playerActionMap.FindAction("Crouch");
         attackAction = playerActionMap.FindAction("Attack");
         interactAction = playerActionMap.FindAction("Interact");
+        sprintAction = playerActionMap.FindAction("Sprint"); // Get sprint action
         
         // Get scroll from UI action map
         var uiActionMap = inputActions.FindActionMap("UI");
@@ -139,6 +146,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         HandleCharacterInput();
+        UpdateCameraFOV();
     }
 
     private void LateUpdate()
@@ -168,9 +176,27 @@ public class Player : MonoBehaviour
         characterInputs.JumpDown = jumpAction.WasPressedThisFrame();
         characterInputs.CrouchDown = crouchAction.WasPressedThisFrame();
         characterInputs.CrouchUp = crouchAction.WasReleasedThisFrame();
+        characterInputs.SprintDown = sprintAction.IsPressed(); // Pass sprint input
 
         // Apply inputs to character
         Character.SetInputs(ref characterInputs);
+    }
+    
+    // New method to handle camera FOV changes when sprinting
+    private void UpdateCameraFOV()
+    {
+        if (VirtualCamera != null)
+        {
+            // Determine target FOV based on sprint state
+            float targetFOV = Character.IsSprinting() ? SprintFOV : DefaultFOV;
+            
+            // Smoothly interpolate current FOV to target FOV
+            VirtualCamera.Lens.FieldOfView = Mathf.Lerp(
+                VirtualCamera.Lens.FieldOfView, 
+                targetFOV, 
+                FOVChangeSpeed * Time.deltaTime
+            );
+        }
     }
 
     private void OnCursorToggle(InputAction.CallbackContext context)
