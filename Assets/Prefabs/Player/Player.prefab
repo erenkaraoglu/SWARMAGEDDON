@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 130635841806160687}
   - component: {fileID: 8817108124326383631}
   - component: {fileID: 4727293368369600626}
+  - component: {fileID: 2079808975646063153}
+  - component: {fileID: 7211296460345550735}
+  - component: {fileID: 825227094634984454}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -55,7 +58,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.33
+  m_Radius: 0.3
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
@@ -72,20 +75,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Motor: {fileID: 8817108124326383631}
-  MaxStableMoveSpeed: 10
+  MaxStableMoveSpeed: 3
   StableMovementSharpness: 15
   OrientationSharpness: 20
   OrientationMethod: 0
-  SprintSpeedMultiplier: 1.6
+  SprintSpeedMultiplier: 1.4
   SprintAccelerationMultiplier: 1.2
-  MaxAirMoveSpeed: 10
-  AirAccelerationSpeed: 30
-  Drag: 0
+  MaxAirMoveSpeed: 3
+  AirAccelerationSpeed: 20
+  Drag: 2
   AllowJumpingWhenSliding: 1
-  JumpUpSpeed: 10
+  JumpUpSpeed: 8
   JumpScalableForwardSpeed: 0
-  JumpPreGroundingGraceTime: 0.1
-  JumpPostGroundingGraceTime: 0.1
+  JumpPreGroundingGraceTime: 0.3
+  JumpPostGroundingGraceTime: 0.3
   IgnoredColliders:
   - {fileID: 0}
   - {fileID: 0}
@@ -108,7 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Capsule: {fileID: 8995064194260180964}
-  CapsuleRadius: 0.33
+  CapsuleRadius: 0.3
   CapsuleHeight: 1.8
   CapsuleYOffset: 0.9
   CapsulePhysicsMaterial: {fileID: 0}
@@ -164,6 +167,73 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2079808975646063153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876988017524165559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95a37fd4b8b45d84cabafd72a5751945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRange: 5
+  interactionLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  maxInteractables: 10
+  raycastOrigin: {fileID: 0}
+  useSphereCast: 1
+  sphereCastRadius: 0.15
+  fieldOfViewAngle: 10
+  requireDirectLineOfSight: 1
+  showDebug: 1
+--- !u!114 &7211296460345550735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876988017524165559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 546b1eddb21b7494e83d29fbe26fbf38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Character: {fileID: 130635841806160687}
+  VirtualCamera: {fileID: 0}
+  InputAxisController: {fileID: 0}
+  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  lookSensitivity: 1
+  interactionDetector: {fileID: 2079808975646063153}
+  interactionUI: {fileID: 0}
+  DefaultFOV: 60
+  SprintFOV: 70
+  FOVChangeSpeed: 5
+--- !u!114 &825227094634984454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876988017524165559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 546b1eddb21b7494e83d29fbe26fbf38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Character: {fileID: 130635841806160687}
+  VirtualCamera: {fileID: 0}
+  InputAxisController: {fileID: 0}
+  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  lookSensitivity: 1
+  interactionDetector: {fileID: 2079808975646063153}
+  interactionUI: {fileID: 0}
+  DefaultFOV: 60
+  SprintFOV: 70
+  FOVChangeSpeed: 5
 --- !u!1 &1467590823134084895
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,7 +245,7 @@ GameObject:
   - component: {fileID: 3116798576359986415}
   - component: {fileID: 6284520418402187448}
   - component: {fileID: 3553764949516971661}
-  m_Layer: 9
+  m_Layer: 7
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +363,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3805979644973087574}
-  m_Layer: 9
+  m_Layer: 7
   m_Name: Meshes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,7 +397,7 @@ GameObject:
   - component: {fileID: 3610273033595600748}
   - component: {fileID: 169092860423791986}
   - component: {fileID: 7477834002018763180}
-  m_Layer: 9
+  m_Layer: 7
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,7 +414,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.59341, y: 0.59341, z: 0.59341}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3116798576359986415}
@@ -651,7 +721,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 10379
+  m_VersionIndex: 10382
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
