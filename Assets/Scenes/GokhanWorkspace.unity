@@ -1999,10 +1999,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 19773005}
     - target: {fileID: 825227094634984454, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
-      propertyPath: interactionUI
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 825227094634984454, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
       propertyPath: InputAxisController
       value: 
       objectReference: {fileID: 19773007}
@@ -2064,16 +2060,12 @@ PrefabInstance:
       objectReference: {fileID: 1008982194}
     - target: {fileID: 6689728451429446380, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
       propertyPath: m_VersionIndex
-      value: 10385
+      value: 10391
       objectReference: {fileID: 0}
     - target: {fileID: 7211296460345550735, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
       propertyPath: VirtualCamera
       value: 
       objectReference: {fileID: 19773005}
-    - target: {fileID: 7211296460345550735, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
-      propertyPath: interactionUI
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7211296460345550735, guid: 109fac9b47c74ff4e9171ffce7c7491f, type: 3}
       propertyPath: InputAxisController
       value: 
