@@ -221,7 +221,12 @@ public class Player : MonoBehaviour
 
     private void OnCursorToggle(InputAction.CallbackContext context)
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        // Toggle if not in computer mode
+        if (!isInComputerMode)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
 
@@ -312,6 +317,18 @@ public class Player : MonoBehaviour
     {
         isInComputerMode = enabled;
         currentComputer = enabled ? computer : null;
+        
+        // Control cursor visibility and lock state
+        if (enabled)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
         
         // Disable/enable interaction detector
         if (interactionDetector != null)
