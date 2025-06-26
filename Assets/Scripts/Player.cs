@@ -40,11 +40,16 @@ public class Player : MonoBehaviour
     private InputAction scrollAction;
     private InputAction interactAction;
     private InputAction sprintAction; // New sprint action
+    private InputAction escapeAction; // New escape action
     
     // Camera control
     private CinemachineOrbitalFollow orbitalFollow;
     private CinemachineThirdPersonFollow thirdPersonFollow;
     private CinemachineFollow cinemachineFollow;
+
+    // Computer mode variables
+    private bool isInComputerMode = false;
+    private ComputerInteractable currentComputer;
 
     private void Awake()
     {
@@ -56,7 +61,8 @@ public class Player : MonoBehaviour
         crouchAction = playerActionMap.FindAction("Crouch");
         attackAction = playerActionMap.FindAction("Attack");
         interactAction = playerActionMap.FindAction("Interact");
-        sprintAction = playerActionMap.FindAction("Sprint"); // Get sprint action
+        sprintAction = playerActionMap.FindAction("Sprint");
+        escapeAction = playerActionMap.FindAction("Escape"); // Get escape action
         
         // Get scroll from UI action map
         var uiActionMap = inputActions.FindActionMap("UI");
@@ -112,6 +118,7 @@ public class Player : MonoBehaviour
         attackAction.performed += OnCursorToggle;
         scrollAction.performed += OnZoom;
         interactAction.performed += OnInteract;
+        escapeAction.performed += OnEscape; // Subscribe to escape
         
         // Subscribe to interaction events
         if (interactionDetector != null)
@@ -134,6 +141,10 @@ public class Player : MonoBehaviour
         if (interactAction != null)
         {
             interactAction.performed -= OnInteract;
+        }
+        if (escapeAction != null)
+        {
+            escapeAction.performed -= OnEscape;
         }
         
         // Unsubscribe from interaction events
@@ -166,6 +177,15 @@ public class Player : MonoBehaviour
 
     private void HandleCharacterInput()
     {
+        // Don't handle movement input if in computer mode
+        if (isInComputerMode)
+        {
+            // Create empty inputs to stop movement
+            PlayerCharacterInputs emptyInputs = new PlayerCharacterInputs();
+            Character.SetInputs(ref emptyInputs);
+            return;
+        }
+
         PlayerCharacterInputs characterInputs = new PlayerCharacterInputs();
 
         // Build the CharacterInputs struct
@@ -277,5 +297,39 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void OnEscape(InputAction.CallbackContext context)
+    {
+        if (isInComputerMode && currentComputer != null)
+        {
+            currentComputer.ForceStandUp();
+        }
+    }
+    
+    // New methods for computer mode
+    public void SetComputerMode(bool enabled, ComputerInteractable computer)
+    {
+        isInComputerMode = enabled;
+        currentComputer = enabled ? computer : null;
+        
+        // Disable/enable interaction detector
+        if (interactionDetector != null)
+        {
+            interactionDetector.enabled = !enabled;
+        }
+        
+        // Hide interaction UI when entering computer mode
+        if (enabled && interactionUI != null)
+        {
+            interactionUI.HideInteraction();
+        }
+        
+        Debug.Log($"Computer mode {(enabled ? "enabled" : "disabled")}");
+    }
+    
+    public bool IsInComputerMode()
+    {
+        return isInComputerMode;
     }
 }
