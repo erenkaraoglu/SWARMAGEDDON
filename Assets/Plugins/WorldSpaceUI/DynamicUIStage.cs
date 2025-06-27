@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class DynamicUIStage : MonoBehaviour
 {
@@ -19,15 +20,9 @@ public class DynamicUIStage : MonoBehaviour
 
     public void OnCursorInput(Vector2 InNormalisedPosition, Vector2 InScrollDelta)
     {
-#if ENABLE_LEGACY_INPUT_MANAGER
-        bool bMouseDownThisFrame = Input.GetMouseButtonDown(0);
-        bool bMouseUpThisFrame = Input.GetMouseButtonUp(0);
-        bool bIsMouseDown = Input.GetMouseButton(0);
-#else
-        bool bMouseDownThisFrame = UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame;
-        bool bMouseUpThisFrame = UnityEngine.InputSystem.Mouse.current.leftButton.wasReleasedThisFrame;   
-        bool bIsMouseDown = UnityEngine.InputSystem.Mouse.current.leftButton.isPressed;
-#endif // ENABLE_LEGACY_INPUT_MANAGER
+        bool bMouseDownThisFrame = Mouse.current.leftButton.wasPressedThisFrame;
+        bool bMouseUpThisFrame = Mouse.current.leftButton.wasReleasedThisFrame;   
+        bool bIsMouseDown = Mouse.current.leftButton.isPressed;
 
         ProcessInput(InNormalisedPosition, InScrollDelta, bMouseDownThisFrame, bMouseUpThisFrame, bIsMouseDown);
     }
@@ -57,6 +52,25 @@ public class DynamicUIStage : MonoBehaviour
                     break;
             }
             DragTargets.Clear();
+        }
+
+        // Process any active drag operations first, regardless of what's under the cursor
+        if (bInIsMouseDown && DragTargets.Count > 0)
+        {
+            foreach (var DragTarget in DragTargets)
+            {
+                PointerEventData DragPointerEvent = new PointerEventData(EventSystem.current);
+                DragPointerEvent.position = InputPosition;
+                DragPointerEvent.dragging = true;
+                DragPointerEvent.button = PointerEventData.InputButton.Left;
+                
+                ExecuteEvents.Execute(DragTarget, DragPointerEvent, ExecuteEvents.dragHandler);
+                
+                // Also update sliders if they're being dragged
+                var TargetSlider = DragTarget.GetComponentInParent<Slider>();
+                if (TargetSlider != null)
+                    TargetSlider.OnDrag(DragPointerEvent);
+            }
         }
 
         // process any hit results
@@ -95,15 +109,7 @@ public class DynamicUIStage : MonoBehaviour
                     if (!DragTargets.Contains(Result.gameObject))
                         DragTargets.Add(Result.gameObject);
                 }
-            } // need to update current drag targets?
-            else if (DragTargets.Contains(Result.gameObject))
-            {
-                PointerEventForResult.dragging = true;
-                ExecuteEvents.Execute(Result.gameObject, PointerEventForResult, ExecuteEvents.dragHandler);
-
-                if (HitSlider != null)
-                    HitSlider.OnDrag(PointerEventForResult);
-            }
+            } 
 
             if (bInMouseDownThisFrame)
             {

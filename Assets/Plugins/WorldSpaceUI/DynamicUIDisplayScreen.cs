@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class DynamicUIDisplayScreen : MonoBehaviour
 {
@@ -13,20 +14,28 @@ public class DynamicUIDisplayScreen : MonoBehaviour
 
     [SerializeField] UnityEvent<Vector2, Vector2> OnCursorInput = new();
 
+    private bool isDragging = false;
+    private Vector2 lastHitTextureCoord;
+
     // Update is called once per frame
     void Update()
     {
-#if ENABLE_LEGACY_INPUT_MANAGER
-        Vector3 MousePosition = Input.mousePosition;
-        Vector2 MouseScroll = Input.mouseScrollDelta;
-#else
-        Vector3 MousePosition = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
-        Vector2 MouseScroll = UnityEngine.InputSystem.Mouse.current.scroll.ReadValue();
-#endif // ENABLE_LEGACY_INPUT_MANAGER
+        Vector3 MousePosition = Mouse.current.position.ReadValue();
+        Vector2 MouseScroll = Mouse.current.scroll.ReadValue();
 
         // apply sensitivity and inversion
         MouseScroll.x *= MouseScrollSensitivity.x * (InvertHorizontalScoll ? -1f : 1f);
         MouseScroll.y *= MouseScrollSensitivity.y * (InvertVerticalScroll ? -1f : 1f);
+
+        bool isMouseDown = Mouse.current.leftButton.isPressed;
+        bool mousePressed = Mouse.current.leftButton.wasPressedThisFrame;
+        bool mouseReleased = Mouse.current.leftButton.wasReleasedThisFrame;
+
+        // If mouse was released, end dragging state
+        if (mouseReleased)
+        {
+            isDragging = false;
+        }
 
         // construct our ray from the mouse position
         Ray MouseRay = Camera.main.ScreenPointToRay(MousePosition);
@@ -37,9 +46,28 @@ public class DynamicUIDisplayScreen : MonoBehaviour
         {
             // ignore if not us
             if (HitResult.collider.gameObject != gameObject)
+            {
+                // Continue sending events during a drag operation even when outside the collider
+                if (isDragging)
+                {
+                    OnCursorInput.Invoke(lastHitTextureCoord, MouseScroll);
+                }
                 return;
+            }
 
+            // If mouse is pressed, start drag state
+            if (mousePressed)
+            {
+                isDragging = true;
+            }
+
+            lastHitTextureCoord = HitResult.textureCoord;
             OnCursorInput.Invoke(HitResult.textureCoord, MouseScroll);
+        }
+        else if (isDragging)
+        {
+            // Keep sending events during a drag operation even when the raycast doesn't hit
+            OnCursorInput.Invoke(lastHitTextureCoord, MouseScroll);
         }
     }
 }
