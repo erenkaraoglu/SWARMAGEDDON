@@ -15,8 +15,8 @@ MonoBehaviour:
   windowId: w_welcome
   windowTitle: Welcome to Omicron 98
   windowPrefab: {fileID: 2162696396707003868, guid: 8cad9c2017f8be8439089a4a10c0f70f, type: 3}
-  oneInstance: 1
+  oneInstance: 0
   canClose: 1
   canMinimize: 1
-  canFullscreen: 1
-  defaultSize: {x: 400, y: 300}
+  canFullscreen: 0
+  defaultSize: {x: 200, y: 150}

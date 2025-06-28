@@ -26,8 +26,11 @@ public class WindowManager : MonoBehaviour
         {
             windowsContainer = transform;
         }
-        
+
         OpenWindow("w_welcome"); // Open a default window on startup
+        OpenWindow("w_welcome"); // Open a default window on startup
+        OpenWindow("w_welcome"); // Open a default window on startup
+        
     }
     
     public UIWindow OpenWindow(string windowId)

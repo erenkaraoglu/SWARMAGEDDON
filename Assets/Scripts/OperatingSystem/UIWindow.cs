@@ -13,6 +13,9 @@ public class UIWindow : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
     [SerializeField] private Button minimizeButton;
     [SerializeField] private Button fullscreenButton;
     
+    [Header("Window Settings")]
+    [SerializeField] private bool restrictPositionToCanvas = true;
+    
     // State
     private bool isFullscreen = false;
     private Vector2 originalSize;
@@ -158,8 +161,32 @@ public class UIWindow : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
             canvasDelta = dragDelta * parentCanvas.scaleFactor;
         }
         
-        // Apply the delta to the original position
-        windowRect.anchoredPosition = rectStartPosition + canvasDelta;
+        // Calculate new position
+        Vector2 newPosition = rectStartPosition + canvasDelta;
+        
+        // Apply position restriction if enabled
+        if (restrictPositionToCanvas && canvasRectTransform != null)
+        {
+            // Get canvas rect dimensions
+            Rect canvasRect = canvasRectTransform.rect;
+            
+            // Calculate the window bounds in canvas space
+            float halfWidth = windowRect.rect.width * 0.5f;
+            float halfHeight = windowRect.rect.height * 0.5f;
+            
+            // Apply limits to keep the entire window within the canvas
+            float minX = canvasRect.xMin + halfWidth;
+            float maxX = canvasRect.xMax - halfWidth;
+            float minY = canvasRect.yMin + halfHeight;
+            float maxY = canvasRect.yMax - halfHeight;
+            
+            // Apply limits, clamping the center of the window
+            newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
+            newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
+        }
+        
+        // Apply the new position
+        windowRect.anchoredPosition = newPosition;
     }
     
     public void OnEndDrag(PointerEventData eventData)
