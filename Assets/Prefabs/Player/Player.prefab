@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 8817108124326383631}
   - component: {fileID: 4727293368369600626}
   - component: {fileID: 2079808975646063153}
-  - component: {fileID: 7211296460345550735}
   - component: {fileID: 825227094634984454}
   m_Layer: 9
   m_Name: Player
@@ -190,28 +189,6 @@ MonoBehaviour:
   fieldOfViewAngle: 10
   requireDirectLineOfSight: 1
   showDebug: 1
---- !u!114 &7211296460345550735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 876988017524165559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 546b1eddb21b7494e83d29fbe26fbf38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Character: {fileID: 130635841806160687}
-  VirtualCamera: {fileID: 0}
-  InputAxisController: {fileID: 0}
-  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  lookSensitivity: 1
-  interactionDetector: {fileID: 2079808975646063153}
-  interactionUI: {fileID: 0}
-  DefaultFOV: 60
-  SprintFOV: 70
-  FOVChangeSpeed: 5
 --- !u!114 &825227094634984454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -721,7 +698,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 10388
+  m_VersionIndex: 10391
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
