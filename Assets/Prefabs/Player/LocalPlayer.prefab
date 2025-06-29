@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7378488046388625048}
   - component: {fileID: 9072228668614898166}
   - component: {fileID: 177695287460209476}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 530957608704521583}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.616, z: 0.226}
+  m_LocalPosition: {x: 0, y: 1.769, z: 0.226}
   m_LocalScale: {x: 0.64, y: 0.2, z: 0.26}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -95,7 +95,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7316376215933799353}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,13 +110,47 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1553116613482644728}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2413424840374855311}
   - {fileID: 7378488046388625048}
+  m_Father: {fileID: 1719520245168859790}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1902770827437936180
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1719520245168859790}
+  m_Layer: 0
+  m_Name: Root
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1719520245168859790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902770827437936180}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2009436619696519309}
+  - {fileID: 7316376215933799353}
+  - {fileID: 4208165350051708579}
   m_Father: {fileID: 184995656547657686}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2506673916378768538
@@ -129,7 +163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2009436619696519309}
   m_Layer: 0
-  m_Name: Head
+  m_Name: PlayerHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,12 +177,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2506673916378768538}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.9, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 184995656547657686}
+  m_Father: {fileID: 1719520245168859790}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2551224518940533449
 GameObject:
@@ -164,7 +198,7 @@ GameObject:
   - component: {fileID: 1812845270374975576}
   - component: {fileID: 2263758552020664624}
   m_Layer: 0
-  m_Name: CinemachineCamera
+  m_Name: PlayerCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -178,13 +212,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2551224518940533449}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.03961445, y: 0.9425129, z: -0.30903566, w: 0.1208182}
-  m_LocalPosition: {x: 0, y: 0.9000001, z: 0}
+  m_LocalRotation: {x: 0.058198728, y: -0.027522659, z: 0.0016051155, w: 0.99792427}
+  m_LocalPosition: {x: 0, y: 1.8000002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 184995656547657686}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 1719520245168859790}
+  m_LocalEulerAnglesHint: {x: 36.307, y: 0, z: 0}
 --- !u!114 &1198947638824062385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,9 +243,9 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 60.000004
+    FieldOfView: 60
     OrthographicSize: 5
-    NearClipPlane: 0.3
+    NearClipPlane: 0.1
     FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 0
@@ -256,7 +290,7 @@ MonoBehaviour:
   ReferenceFrame: 1
   RecenterTarget: 0
   PanAxis:
-    Value: 165.39049
+    Value: -3.1596239
     Center: 0
     Range: {x: -180, y: 180}
     Wrap: 1
@@ -266,7 +300,7 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   TiltAxis:
-    Value: 36.307064
+    Value: 6.6753936
     Center: 0
     Range: {x: -70, y: 70}
     Wrap: 0
@@ -298,6 +332,8 @@ MonoBehaviour:
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
         Gain: 3
+        LegacyInput: 
+        LegacyGain: 1
         CancelDeltaTime: 0
       InputValue: 0
       Driver:
@@ -309,6 +345,8 @@ MonoBehaviour:
       Input:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
         Gain: -3
+        LegacyInput: 
+        LegacyGain: 1
         CancelDeltaTime: 0
       InputValue: -0
       Driver:
@@ -353,9 +391,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2009436619696519309}
-  - {fileID: 7316376215933799353}
-  - {fileID: 4208165350051708579}
+  - {fileID: 1719520245168859790}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8693582579428533021
@@ -371,17 +407,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Motor: {fileID: 182470394301313458}
-  MaxMoveSpeed: 10
-  MaxSprintSpeed: 15
+  MaxStableMoveSpeed: 4.5
+  MaxSprintSpeed: 6.5
   StableMovementSharpness: 15
-  OrientationSharpness: 10
-  JumpSpeed: 10
+  OrientationSharpness: 20
+  OrientationMethod: 0
+  MaxAirMoveSpeed: 4
+  AirAccelerationSpeed: 30
+  Drag: 0
+  AllowJumpingWhenSliding: 0
+  JumpUpSpeed: 8
+  JumpScalableForwardSpeed: 0
+  JumpPreGroundingGraceTime: 0.15
+  JumpPostGroundingGraceTime: 0.15
+  SprintingCamera: {fileID: 1198947638824062385}
+  SprintingFov: 70
+  FovSharpness: 10
+  IgnoredColliders: []
+  BonusOrientationMethod: 0
+  BonusOrientationSharpness: 10
   Gravity: {x: 0, y: -30, z: 0}
   MeshRoot: {fileID: 7316376215933799353}
-  CinemachineCamera: {fileID: 1198947638824062385}
-  NormalFov: 60
-  SprintFov: 70
-  FovChangeSpeed: 5
+  CameraFollowPoint: {fileID: 2009436619696519309}
+  CrouchedCapsuleHeight: 1
 --- !u!114 &182470394301313458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,7 +445,7 @@ MonoBehaviour:
   Capsule: {fileID: 924278221763165417}
   CapsuleRadius: 0.3
   CapsuleHeight: 2
-  CapsuleYOffset: 0
+  CapsuleYOffset: 1
   CapsulePhysicsMaterial: {fileID: 0}
   GroundDetectionExtraDistance: 0
   MaxStableSlopeAngle: 60
@@ -405,16 +453,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   DiscreteCollisionEvents: 0
-  StepHandling: 1
+  StepHandling: 2
   MaxStepHeight: 0.5
   AllowSteppingWithoutStableGrounding: 0
-  MinRequiredStepDepth: 0
+  MinRequiredStepDepth: 0.1
   LedgeAndDenivelationHandling: 1
-  MaxStableDistanceFromLedge: 0
+  MaxStableDistanceFromLedge: 0.3
   MaxVelocityForLedgeSnap: 0
   MaxStableDenivelationAngle: 180
   InteractiveRigidbodyHandling: 1
-  RigidbodyInteractionType: 0
+  RigidbodyInteractionType: 1
   SimulatedCharacterMass: 1
   PreserveAttachedRigidbodyMomentum: 1
   HasPlanarConstraint: 0
@@ -446,7 +494,7 @@ CapsuleCollider:
   m_Radius: 0.3
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &649847189968654176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,7 +542,7 @@ MonoBehaviour:
   _teleportThreshold: 1
   <PrefabId>k__BackingField: 10
   <SpawnableCollectionId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 15563929340337150733
+  <AssetPathHash>k__BackingField: 17784252956162687115
   <SceneId>k__BackingField: 0
   SerializedTransformProperties:
     Position: {x: 0, y: 6, z: 0}
@@ -612,7 +660,7 @@ GameObject:
   - component: {fileID: 2413424840374855311}
   - component: {fileID: 4377323376635657688}
   - component: {fileID: 1434262666253552486}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -628,7 +676,7 @@ Transform:
   m_GameObject: {fileID: 7644026598408033231}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 0.6, y: 1, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []

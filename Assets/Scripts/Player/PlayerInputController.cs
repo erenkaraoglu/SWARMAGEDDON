@@ -11,6 +11,7 @@ public class PlayerInputController : MonoBehaviour
 
     private InputAction _moveAction;
     private InputAction _jumpAction;
+    private InputAction _crouchAction;
     private InputAction _sprintAction;
 
     private void Awake()
@@ -21,6 +22,7 @@ public class PlayerInputController : MonoBehaviour
 
         _moveAction = PlayerInput.actions["Move"];
         _jumpAction = PlayerInput.actions["Jump"];
+        _crouchAction = PlayerInput.actions["Crouch"];
         _sprintAction = PlayerInput.actions["Sprint"];
     }
 
@@ -32,18 +34,22 @@ public class PlayerInputController : MonoBehaviour
     private void HandleCharacterInput()
     {
         // Create a new inputs struct
-        var inputs = new SwarmCharacterController.PlayerInputs();
+        var inputs = new PlayerCharacterInputs();
 
         // Get input values
         Vector2 moveInput = _moveAction.ReadValue<Vector2>();
         bool jumpInput = _jumpAction.WasPressedThisFrame();
+        bool crouchInputDown = _crouchAction.WasPressedThisFrame();
+        bool crouchInputUp = _crouchAction.WasReleasedThisFrame();
         bool sprintInput = _sprintAction.IsPressed();
 
         // Assign inputs
         inputs.MoveAxisForward = moveInput.y;
         inputs.MoveAxisRight = moveInput.x;
         inputs.JumpDown = jumpInput;
-        inputs.SprintHeld = sprintInput;
+        inputs.CrouchDown = crouchInputDown;
+        inputs.CrouchUp = crouchInputUp;
+        inputs.Sprint = sprintInput;
 
         // It is very important to provide the camera rotation to the character controller
         if (MainCamera != null)

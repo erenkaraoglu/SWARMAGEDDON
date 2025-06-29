@@ -20,7 +20,7 @@ public class KCCFishNetAdapter : NetworkBehaviour
         _cinemachineCamera = GetComponentInChildren<CinemachineCamera>();
 
         // Loop on every child to find the player mesh
-        foreach (Transform child in transform)
+        foreach (Transform child in transform.GetChild(0)) // Getchild(0) = PlayerRoot
         {
             if (child.name == "PlayerMesh")
             {
@@ -43,19 +43,6 @@ public class KCCFishNetAdapter : NetworkBehaviour
             _kinematicCharacterMotor.enabled = true;
             _cinemachineCamera.enabled = true;
 
-            // Change the local player mesh layer to "PlayerMesh"
-            if (_playerMesh != null)
-            {
-                foreach (Transform child in _playerMesh.transform)
-                {
-                    child.gameObject.layer = LayerMask.NameToLayer("PlayerMesh");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("PlayerMesh not found in KCCFishNetAdapter.");
-            }
-            
         }
         else
         {
@@ -66,6 +53,19 @@ public class KCCFishNetAdapter : NetworkBehaviour
             _swarmCharacterController.enabled = false;
             _kinematicCharacterMotor.enabled = false;
             _cinemachineCamera.enabled = false;
+            
+            // Change the local player mesh layer to "Default"
+            if (_playerMesh != null)
+            {
+                foreach (Transform child in _playerMesh.transform)
+                {
+                    child.gameObject.layer = LayerMask.NameToLayer("Default");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("PlayerMesh not found in KCCFishNetAdapter.");
+            }
         }
     }
 }
