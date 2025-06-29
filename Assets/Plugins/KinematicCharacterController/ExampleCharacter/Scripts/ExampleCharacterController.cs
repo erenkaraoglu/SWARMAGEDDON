@@ -25,7 +25,6 @@ namespace KinematicCharacterController.Examples
         public bool JumpDown;
         public bool CrouchDown;
         public bool CrouchUp;
-        public bool SprintDown; // Add sprint input
     }
 
     public struct AICharacterInputs
@@ -51,10 +50,6 @@ namespace KinematicCharacterController.Examples
         public float OrientationSharpness = 10f;
         public OrientationMethod OrientationMethod = OrientationMethod.TowardsCamera;
 
-        [Header("Sprint Settings")]
-        public float SprintSpeedMultiplier = 1.6f;
-        public float SprintAccelerationMultiplier = 1.2f;
-        
         [Header("Air Movement")]
         public float MaxAirMoveSpeed = 15f;
         public float AirAccelerationSpeed = 15f;
@@ -90,8 +85,7 @@ namespace KinematicCharacterController.Examples
         private Vector3 _internalVelocityAdd = Vector3.zero;
         private bool _shouldBeCrouching = false;
         private bool _isCrouching = false;
-        private bool _isSprinting = false;
-        
+
         private Vector3 lastInnerNormal = Vector3.zero;
         private Vector3 lastOuterNormal = Vector3.zero;
 
@@ -176,9 +170,6 @@ namespace KinematicCharacterController.Examples
                                 break;
                         }
 
-                        // Sprint input handling
-                        _isSprinting = inputs.SprintDown && !_isCrouching;
-
                         // Jumping input
                         if (inputs.JumpDown)
                         {
@@ -190,7 +181,6 @@ namespace KinematicCharacterController.Examples
                         if (inputs.CrouchDown)
                         {
                             _shouldBeCrouching = true;
-                            _isSprinting = false; // Cancel sprint when crouching
 
                             if (!_isCrouching)
                             {
@@ -307,20 +297,10 @@ namespace KinematicCharacterController.Examples
                             // Calculate target velocity
                             Vector3 inputRight = Vector3.Cross(_moveInputVector, Motor.CharacterUp);
                             Vector3 reorientedInput = Vector3.Cross(effectiveGroundNormal, inputRight).normalized * _moveInputVector.magnitude;
-                            
-                            // Apply sprint multiplier if sprinting
-                            float targetSpeed = MaxStableMoveSpeed;
-                            float targetSharpness = StableMovementSharpness;
-                            if (_isSprinting)
-                            {
-                                targetSpeed *= SprintSpeedMultiplier;
-                                targetSharpness *= SprintAccelerationMultiplier;
-                            }
-                            
-                            Vector3 targetMovementVelocity = reorientedInput * targetSpeed;
+                            Vector3 targetMovementVelocity = reorientedInput * MaxStableMoveSpeed;
 
                             // Smooth movement Velocity
-                            currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-targetSharpness * deltaTime));
+                            currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime));
                         }
                         // Air movement
                         else
@@ -328,20 +308,15 @@ namespace KinematicCharacterController.Examples
                             // Add move input
                             if (_moveInputVector.sqrMagnitude > 0f)
                             {
-                                // Apply sprint multiplier to air movement too
-                                float airSpeedMultiplier = _isSprinting ? SprintSpeedMultiplier : 1f;
-                                Vector3 addedVelocity = _moveInputVector * AirAccelerationSpeed * airSpeedMultiplier * deltaTime;
+                                Vector3 addedVelocity = _moveInputVector * AirAccelerationSpeed * deltaTime;
 
                                 Vector3 currentVelocityOnInputsPlane = Vector3.ProjectOnPlane(currentVelocity, Motor.CharacterUp);
 
                                 // Limit air velocity from inputs
-                                // Calculate sprint-adjusted max air speed
-                                float adjustedMaxAirMoveSpeed = _isSprinting ? MaxAirMoveSpeed * SprintSpeedMultiplier : MaxAirMoveSpeed;
-                                
-                                if (currentVelocityOnInputsPlane.magnitude < adjustedMaxAirMoveSpeed)
+                                if (currentVelocityOnInputsPlane.magnitude < MaxAirMoveSpeed)
                                 {
                                     // clamp addedVel to make total vel not exceed max vel on inputs plane
-                                    Vector3 newTotal = Vector3.ClampMagnitude(currentVelocityOnInputsPlane + addedVelocity, adjustedMaxAirMoveSpeed);
+                                    Vector3 newTotal = Vector3.ClampMagnitude(currentVelocityOnInputsPlane + addedVelocity, MaxAirMoveSpeed);
                                     addedVelocity = newTotal - currentVelocityOnInputsPlane;
                                 }
                                 else
@@ -536,12 +511,6 @@ namespace KinematicCharacterController.Examples
 
         public void OnDiscreteCollisionDetected(Collider hitCollider)
         {
-        }
-
-        // Public accessor for sprinting state
-        public bool IsSprinting()
-        {
-            return _isSprinting;
         }
     }
 }
