@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Interaction;
 
 [RequireComponent(typeof(SwarmCharacterController))]
+[RequireComponent(typeof(InteractionDetector))]
 public class PlayerInputController : MonoBehaviour
 {
     private SwarmCharacterController _characterController;
+    private InteractionDetector _interactionDetector;
 
     public PlayerInput PlayerInput { get; private set; }
     public Camera MainCamera { get; private set; }
@@ -13,10 +16,13 @@ public class PlayerInputController : MonoBehaviour
     private InputAction _jumpAction;
     private InputAction _crouchAction;
     private InputAction _sprintAction;
+    private InputAction _interactAction;
+    private InputAction _escapeAction;
 
     private void Awake()
     {
         _characterController = GetComponent<SwarmCharacterController>();
+        _interactionDetector = GetComponent<InteractionDetector>();
         PlayerInput = GetComponent<PlayerInput>();
         MainCamera = Camera.main;
 
@@ -24,11 +30,31 @@ public class PlayerInputController : MonoBehaviour
         _jumpAction = PlayerInput.actions["Jump"];
         _crouchAction = PlayerInput.actions["Crouch"];
         _sprintAction = PlayerInput.actions["Sprint"];
+        _interactAction = PlayerInput.actions["Interact"];
+        _escapeAction = PlayerInput.actions["Escape"];
     }
 
     private void Update()
     {
         HandleCharacterInput();
+        HandleInteractionInput();
+        HandleEscapeInput();
+    }
+
+    private void HandleEscapeInput()
+    {
+        if (_escapeAction.WasPressedThisFrame())
+        {
+            _characterController.ExitComputerMode();
+        }
+    }
+
+    private void HandleInteractionInput()
+    {
+        if (_interactAction.WasPressedThisFrame())
+        {
+            _interactionDetector.TryInteract();
+        }
     }
 
     private void HandleCharacterInput()

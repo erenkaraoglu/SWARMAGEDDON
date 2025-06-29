@@ -3,10 +3,12 @@ using KinematicCharacterController;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using System;
+using Interaction;
 
 public enum CharacterState
 {
     Default,
+    ComputerMode,
 }
 
 public enum OrientationMethod
@@ -76,6 +78,9 @@ public class SwarmCharacterController : MonoBehaviour, ICharacterController
     public Transform CameraFollowPoint;
     public float CrouchedCapsuleHeight = 1f;
 
+    [Header("Computer Mode")]
+    public CinemachineCamera PlayerCamera;
+
     public CharacterState CurrentCharacterState { get; private set; }
 
     private Collider[] _probedColliders = new Collider[8];
@@ -96,6 +101,9 @@ public class SwarmCharacterController : MonoBehaviour, ICharacterController
     private Vector3 lastInnerNormal = Vector3.zero;
     private Vector3 lastOuterNormal = Vector3.zero;
 
+    private ComputerInteractable _currentComputer;
+    private CinemachineInputAxisController[] _cinemachineInputControllers;
+
     private void Awake()
     {
         // Handle initial state
@@ -108,6 +116,9 @@ public class SwarmCharacterController : MonoBehaviour, ICharacterController
         {
             _defaultFov = SprintingCamera.Lens.FieldOfView;
         }
+
+        // Find all Cinemachine input axis controllers
+        _cinemachineInputControllers = FindObjectsOfType<CinemachineInputAxisController>();
     }
 
     /// <summary>
@@ -130,6 +141,20 @@ public class SwarmCharacterController : MonoBehaviour, ICharacterController
         {
             case CharacterState.Default:
                 {
+                    // Re-enable Cinemachine input controllers
+                    SetCinemachineInputEnabled(true);
+                    break;
+                }
+            case CharacterState.ComputerMode:
+                {
+                    // Disable player camera when entering computer mode
+                    if (PlayerCamera != null)
+                    {
+                        PlayerCamera.enabled = false;
+                    }
+                    
+                    // Disable Cinemachine input controllers
+                    SetCinemachineInputEnabled(false);
                     break;
                 }
         }
@@ -146,6 +171,15 @@ public class SwarmCharacterController : MonoBehaviour, ICharacterController
                 {
                     break;
                 }
+            case CharacterState.ComputerMode:
+                {
+                    // Re-enable player camera when exiting computer mode
+                    if (PlayerCamera != null)
+                    {
+                        PlayerCamera.enabled = true;
+                    }
+                    break;
+                }
         }
     }
 
@@ -154,6 +188,15 @@ public class SwarmCharacterController : MonoBehaviour, ICharacterController
     /// </summary>
     public void SetInputs(ref PlayerCharacterInputs inputs)
     {
+        // Don't process movement inputs in computer mode
+        if (CurrentCharacterState == CharacterState.ComputerMode)
+        {
+            _moveInputVector = Vector3.zero;
+            _lookInputVector = Vector3.zero;
+            _isSprinting = false;
+            return;
+        }
+
         // Clamp input
         Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(inputs.MoveAxisRight, 0f, inputs.MoveAxisForward), 1f);
 
@@ -284,6 +327,11 @@ public class SwarmCharacterController : MonoBehaviour, ICharacterController
                     }
                     break;
                 }
+            case CharacterState.ComputerMode:
+                {
+                    // Don't update rotation in computer mode
+                    break;
+                }
         }
     }
 
@@ -398,6 +446,12 @@ public class SwarmCharacterController : MonoBehaviour, ICharacterController
                     }
                     break;
                 }
+            case CharacterState.ComputerMode:
+                {
+                    // Zero out velocity in computer mode
+                    currentVelocity = Vector3.zero;
+                    break;
+                }
         }
     }
 
@@ -461,7 +515,7 @@ public class SwarmCharacterController : MonoBehaviour, ICharacterController
                     // Handle FOV
                     if (SprintingCamera != null)
                     {
-                        float targetFov = _isSprinting && Motor.GroundingStatus.IsStableOnGround ? SprintingFov : _defaultFov;
+                        float targetFov = _isSprinting ? SprintingFov : _defaultFov;
                         SprintingCamera.Lens.FieldOfView = Mathf.Lerp(SprintingCamera.Lens.FieldOfView, targetFov, 1 - Mathf.Exp(-FovSharpness * deltaTime));
                     }
                     break;
@@ -531,5 +585,41 @@ public class SwarmCharacterController : MonoBehaviour, ICharacterController
 
     public void OnDiscreteCollisionDetected(Collider hitCollider)
     {
+    }
+
+    public void SetComputerMode(bool enabled, ComputerInteractable computer)
+    {
+        if (enabled)
+        {
+            _currentComputer = computer;
+            TransitionToState(CharacterState.ComputerMode);
+        }
+        else
+        {
+            _currentComputer = null;
+            TransitionToState(CharacterState.Default);
+        }
+    }
+
+    public void ExitComputerMode()
+    {
+        if (CurrentCharacterState == CharacterState.ComputerMode && _currentComputer != null)
+        {
+            _currentComputer.ForceStandUp();
+        }
+    }
+
+    private void SetCinemachineInputEnabled(bool enabled)
+    {
+        if (_cinemachineInputControllers != null)
+        {
+            foreach (var inputController in _cinemachineInputControllers)
+            {
+                if (inputController != null)
+                {
+                    inputController.enabled = enabled;
+                }
+            }
+        }
     }
 }

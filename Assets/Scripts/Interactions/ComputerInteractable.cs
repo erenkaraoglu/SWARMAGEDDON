@@ -30,7 +30,7 @@ namespace Interaction
         private Vector3 originalPlayerPosition;
         private Quaternion originalPlayerRotation;
         private Tween sitTween;
-        //private Player playerScript;
+        private SwarmCharacterController playerController;
         
         public override string InteractionText 
         {
@@ -77,14 +77,14 @@ namespace Interaction
             if (chairPosition == null || computerCamera == null) return;
             
             currentUser = interactor;
-            //playerScript = interactor.GetComponent<Player>();
-            /*
-            if (playerScript == null)
+            playerController = interactor.GetComponent<SwarmCharacterController>();
+            
+            if (playerController == null)
             {
-                Debug.LogWarning("Player script not found on interactor. Current:" + interactor.name);
+                Debug.LogWarning("SwarmCharacterController not found on interactor. Current:" + interactor.name);
                 return;
             }
-            */
+            
             // Store original position and rotation
             originalPlayerPosition = interactor.transform.position;
             originalPlayerRotation = interactor.transform.rotation;
@@ -93,7 +93,7 @@ namespace Interaction
             isAnimating = true;
             
             // Enable computer mode on player
-           // playerScript.SetComputerMode(true, this);
+            playerController.SetComputerMode(true, this);
             
             // Switch camera priority
             if (computerCamera != null)
@@ -116,13 +116,13 @@ namespace Interaction
             
             isInUse = false;
             isAnimating = true;
-            /*
+            
             // Disable computer mode on player
-            if (playerScript != null)
+            if (playerController != null)
             {
-                playerScript.SetComputerMode(false, null);
+                playerController.SetComputerMode(false, null);
             }
-            */
+            
             // Reset camera priority
             if (computerCamera != null)
             {
@@ -169,7 +169,7 @@ namespace Interaction
                     isAnimating = false;
                     sitTween = null;
                     currentUser = null;
-                    //playerScript = null;
+                    playerController = null;
                 });
         }
         

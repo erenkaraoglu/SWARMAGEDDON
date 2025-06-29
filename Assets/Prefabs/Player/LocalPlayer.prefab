@@ -232,8 +232,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Priority:
-    Enabled: 0
-    m_Value: 0
+    Enabled: 1
+    m_Value: 200
   OutputChannel: 1
   StandbyUpdate: 2
   m_StreamingVersion: 20241001
@@ -366,6 +366,7 @@ GameObject:
   - component: {fileID: 8693582579428533021}
   - component: {fileID: 182470394301313458}
   - component: {fileID: 924278221763165417}
+  - component: {fileID: 4935733687215229182}
   - component: {fileID: 649847189968654176}
   - component: {fileID: 7770447404660265639}
   - component: {fileID: 9116755665113638987}
@@ -430,6 +431,7 @@ MonoBehaviour:
   MeshRoot: {fileID: 7316376215933799353}
   CameraFollowPoint: {fileID: 2009436619696519309}
   CrouchedCapsuleHeight: 1
+  PlayerCamera: {fileID: 1198947638824062385}
 --- !u!114 &182470394301313458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,6 +497,29 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &4935733687215229182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7388779059182565245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95a37fd4b8b45d84cabafd72a5751945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRange: 3
+  interactionLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  maxInteractables: 10
+  raycastOrigin: {fileID: 2009436619696519309}
+  useSphereCast: 1
+  sphereCastRadius: 0.5
+  fieldOfViewAngle: 30
+  requireDirectLineOfSight: 1
+  showDebug: 1
 --- !u!114 &649847189968654176
 MonoBehaviour:
   m_ObjectHideFlags: 0

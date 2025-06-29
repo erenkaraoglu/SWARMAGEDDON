@@ -2,6 +2,7 @@ using UnityEngine;
 using FishNet.Object;
 using KinematicCharacterController;
 using Unity.Cinemachine;
+using Interaction;
 
 [RequireComponent(typeof(PlayerInputController), typeof(SwarmCharacterController), typeof(KinematicCharacterMotor))]
 public class KCCFishNetAdapter : NetworkBehaviour
@@ -10,6 +11,7 @@ public class KCCFishNetAdapter : NetworkBehaviour
     private SwarmCharacterController _swarmCharacterController;
     private KinematicCharacterMotor _kinematicCharacterMotor;
     private CinemachineCamera _cinemachineCamera;
+    private InteractionDetector _interactionDetector;
     private GameObject _playerMesh;
 
     private void Awake()
@@ -18,6 +20,7 @@ public class KCCFishNetAdapter : NetworkBehaviour
         _swarmCharacterController = GetComponent<SwarmCharacterController>();
         _kinematicCharacterMotor = GetComponent<KinematicCharacterMotor>();
         _cinemachineCamera = GetComponentInChildren<CinemachineCamera>();
+        _interactionDetector = GetComponent<InteractionDetector>();
 
         // Loop on every child to find the player mesh
         foreach (Transform child in transform.GetChild(0)) // Getchild(0) = PlayerRoot
@@ -42,7 +45,10 @@ public class KCCFishNetAdapter : NetworkBehaviour
             _swarmCharacterController.enabled = true;
             _kinematicCharacterMotor.enabled = true;
             _cinemachineCamera.enabled = true;
-
+            _interactionDetector.enabled = true;
+            
+            // Set the player camera reference in SwarmCharacterController
+            _swarmCharacterController.PlayerCamera = _cinemachineCamera;
         }
         else
         {
@@ -53,6 +59,7 @@ public class KCCFishNetAdapter : NetworkBehaviour
             _swarmCharacterController.enabled = false;
             _kinematicCharacterMotor.enabled = false;
             _cinemachineCamera.enabled = false;
+            _interactionDetector.enabled = false;
             
             // Change the local player mesh layer to "Default"
             if (_playerMesh != null)

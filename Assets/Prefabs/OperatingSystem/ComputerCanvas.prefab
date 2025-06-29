@@ -257,6 +257,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7078bb3e44de5fa44ae2fd41b8f0cd1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 0}
+  _networkObjectCache: {fileID: 0}
   windowsContainer: {fileID: 3158446851114312134}
   availableWindows:
   - {fileID: 11400000, guid: aa200faa0d352544bacb6980e7b563be, type: 2}
